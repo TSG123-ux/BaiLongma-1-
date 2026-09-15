@@ -1830,7 +1830,7 @@ async function main() {
       deferConsciousnessUntilActivationIntro()
     },
     onActivationIntroComplete: () => releaseConsciousnessAfterActivationIntro('completed'),
-    ensureStartupSelfCheckState: consciousnessLoop.ensureStartupSelfCheckState,
+    ensureStartupSelfCheckState: awakeningManager.ensureStartupSelfCheckState,
     triggerImmediateTick: consciousnessLoop.triggerImmediateTick,
   })
   // 仅在配置了正式预警 API 与目标地区时启用；避免把普通路径数据当作安全预警。

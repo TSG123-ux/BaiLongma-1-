@@ -222,16 +222,9 @@ export function createConsciousnessLoop({
   // Called when a new message arrives: clear the pending timer and run the next tick immediately.
   // If currently processing, rely on the abort mechanism to finish quickly; scheduleNextTick will use interval=0 to resume.
   function triggerImmediateTick() {
-    if (processing) {
-      console.log('[triggerImmediateTick] skipped: processing=true')
-      return  // rely on abort + the post-finish scheduleNextTick to continue
-    }
-    if (!isRunning()) {
-      console.log('[triggerImmediateTick] skipped: not running')
-      return
-    }
+    if (processing) return  // rely on abort + the post-finish scheduleNextTick to continue
+    if (!isRunning()) return
     if (currentTimer) { clearTimeout(currentTimer); currentTimer = null }
-    console.log('[triggerImmediateTick] triggered, isStartupSelfCheckActive:', isStartupSelfCheckActive())
     // 异步启动一轮，不等结果
     (async () => {
       try {
