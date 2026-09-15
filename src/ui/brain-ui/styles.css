@@ -221,9 +221,12 @@ body {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: none;
-  /* The dashboard cards provide their own surface and shadow. Keep the
-     transparent rail from clipping those shadows at its outer bounds. */
-  overflow: visible;
+  /* Allow horizontal overflow for card shadows, but scroll vertically when content exceeds viewport */
+  overflow-x: visible;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 /* One-shot handoff from the activation film into the real cognitive surface. */
@@ -1247,10 +1250,12 @@ body {
 }
 
 .stream::-webkit-scrollbar,
-.panel::-webkit-scrollbar { width: 6px; }
+.panel::-webkit-scrollbar,
+#panel-l2::-webkit-scrollbar { width: 6px; }
 
 .stream::-webkit-scrollbar-thumb,
-.panel::-webkit-scrollbar-thumb {
+.panel::-webkit-scrollbar-thumb,
+#panel-l2::-webkit-scrollbar-thumb {
   background: var(--line-strong);
   border-radius: 999px;
 }

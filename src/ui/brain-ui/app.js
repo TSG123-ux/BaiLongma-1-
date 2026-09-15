@@ -97,7 +97,7 @@ function playBrainUiArrival(enabled) {
 
 const brainUiArrival = consumeBrainUiArrival();
 const isBrainUiIntroPreview = new URLSearchParams(window.location.search).has("intro-preview");
-const brainUiIntroRequested = brainUiArrival.requested || isBrainUiIntroPreview;
+const brainUiIntroRequested = true;
 document.documentElement.classList.toggle("brain-ui-intro-pending", brainUiIntroRequested);
 const hasWindowsTitleBarOverlay = window.bailongma?.isElectron && window.bailongma?.platform === "win32";
 document.documentElement.classList.toggle("windows-titlebar-overlay", Boolean(hasWindowsTitleBarOverlay));
@@ -118,7 +118,7 @@ if (brainUiIntroRequested) {
       await playBrainUiIntro();
     } finally {
       await playBrainUiArrival(true);
-      if (brainUiArrival.releaseSelfCheck && !isBrainUiIntroPreview) {
+      if (!isBrainUiIntroPreview) {
         fetch("/activation/intro-complete", { method: "POST" })
           .then((response) => {
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
