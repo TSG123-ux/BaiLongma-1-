@@ -78,20 +78,15 @@ export function createAwakeningManager({
 
   function ensureStartupSelfCheckState(state = runtimeState) {
     const target = requireState(state)
-    const current = readStartupSelfCheckState()
-    if (current?.version === STARTUP_SELF_CHECK_VERSION && current.status === 'completed') {
-      target.startupSelfCheck = { ...current, active: false }
-      return target.startupSelfCheck
-    }
-
     const now = nowTimestamp()
+    const current = readStartupSelfCheckState()
     const next = {
       version: STARTUP_SELF_CHECK_VERSION,
       status: 'running',
-      started_at: current?.started_at || now,
+      started_at: now,
       updated_at: now,
-      attempts: Number(current?.attempts || 0) + (current?.status === 'running' ? 0 : 1),
-      results: current?.version === STARTUP_SELF_CHECK_VERSION && current?.results ? current.results : {},
+      attempts: Number(current?.attempts || 0) + 1,
+      results: {},
       active: true,
     }
     writeStartupSelfCheckState(next)
@@ -107,8 +102,8 @@ export function createAwakeningManager({
       `Use one Scene surface throughout: id="self-check", kind="selfcheck". Update that same id for each running step, then morph it to done before removing it.`,
       `1. Call speak text="小白龙已启动，正在检查文件读写能力". Call ui_set({id:"self-check",kind:"selfcheck",intent:"inform",data:{phase:"running",step:1,total:3,name:"文件读写",icon:"📁"}}). Write the current timestamp to self_check.txt in the sandbox root using write_file, then use read_file to read it back and verify the content. Record ok, degraded, or error from the tool evidence.`,
       `2. Call speak text="正在检查热点面板". Call ui_set({id:"self-check",kind:"selfcheck",intent:"inform",data:{phase:"running",step:2,total:3,name:"热点面板",icon:"🌐"}}). Call hotspot_mode action="show", verify its response, then call hotspot_mode action="hide". Record the actual result.`,
-      `3. Call speak text="正在检查白龙马专用 Chrome". Call ui_set({id:"self-check",kind:"selfcheck",intent:"inform",data:{phase:"running",step:3,total:3,name:"白龙马专用 Chrome",icon:"🌐"}}). Call browser_navigate once with url="https://example.com" and verify the page title/content from the automatic accessibility snapshot in that navigation result. Do not routinely call browser_snapshot; use it only if the navigation result lacks a snapshot. Call browser_close when done. Do not use any other networking tool. Record the actual result.`,
-      `Continue even if a step fails. Then call ui_set({id:"self-check",kind:"selfcheck",intent:"inform",data:{phase:"done",results:[{name:"文件读写",status:"ok/error/skipped",note:"..."},{name:"热点面板",status:"ok/error/skipped",note:"..."},{name:"白龙马专用 Chrome",status:"ok/error/skipped",note:"..."}],overall:"ok/degraded/error"}}), replacing the placeholder values with the actual outcomes. Call complete_startup_self_check with the same evidence-based result map, then call ui_set with id="self-check" and remove=true.`,
+      `3. Call speak text="正在检查白龙马专用 Chrome". Call ui_set({id:"self-check",kind:"selfcheck",intent:"inform",data:{phase:"running",step:3,total:3,name:"白龙马专用 Chrome",icon:"🌐"}}). Try calling browser_navigate once with url="https://example.com". If the browser is available, verify the page title/content from the automatic accessibility snapshot. If browser_navigate fails or returns an error (e.g., Chrome DevTools not connected), record status as "degraded" with note "Chrome DevTools 不可用，浏览器功能受限" and continue — do NOT treat this as a fatal error. Call browser_close when done. Do not use any other networking tool. Record the actual result.`,
+      `Continue even if a step fails. If a step fails or returns degraded, still include it in results but do not let it block the overall completion. Then call ui_set({id:"self-check",kind:"selfcheck",intent:"inform",data:{phase:"done",results:[{name:"文件读写",status:"ok/error/skipped",note:"..."},{name:"热点面板",status:"ok/error/skipped",note:"..."},{name:"白龙马专用 Chrome",status:"ok/degraded/error/skipped",note:"..."}],overall:"ok/degraded/error"}}), replacing the placeholder values with the actual outcomes. Overall should be "ok" if at least 2 of 3 steps are ok, "degraded" if 1 step failed but the rest are ok, and "error" only if 2+ steps failed. Call complete_startup_self_check with the same evidence-based result map, then call ui_set with id="self-check" and remove=true.`,
     ].join('\n')
   }
 
