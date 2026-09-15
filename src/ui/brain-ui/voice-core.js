@@ -150,7 +150,7 @@ export function createVoiceCore({ canvas, transcript, getChatInput, getSendMessa
   // ─── 渲染状态 ───
   let sk = 'idle';
   let modelThinking = false;
-  let animState = {
+  const animState = {
     amp: STATE_CFG.idle.amp, spd: STATE_CFG.idle.spd,
     col: [STATE_CFG.idle.r, STATE_CFG.idle.g, STATE_CFG.idle.b],
     t: 0, rotY: 0, rotX: 0.25,

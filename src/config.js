@@ -1117,7 +1117,7 @@ if (storedLlm) {
 }
 
 // At startup, copy social credentials from the config file into process.env so connectors can read them
-;(function loadSocialEnv() {
+(function loadSocialEnv() {
   try {
     const raw = fs.readFileSync(paths.configFile, 'utf-8')
     const social = JSON.parse(raw)?.social || {}

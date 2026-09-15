@@ -427,7 +427,7 @@ function initTTSSettings({ createAutosave, feedback } = {}) {
   let cachedMinimax = { configured: false };
 
   function syncContextWindowControls(changed = "load") {
-    let chatMessageLimit = Math.min(40, Math.max(1, Number(chatContextSlider?.value) || 20));
+    const chatMessageLimit = Math.min(40, Math.max(1, Number(chatContextSlider?.value) || 20));
     let toolCallLimit = Math.min(40, Math.max(0, Number(toolContextSlider?.value) || 0));
     if (toolCallLimit >= chatMessageLimit) {
       toolCallLimit = Math.max(0, chatMessageLimit - 1);

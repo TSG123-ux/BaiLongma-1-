@@ -2097,7 +2097,7 @@ const HEARTBEAT_MAJOR_STRENGTH = 1;
 const HEARTBEAT_TOOL_STRENGTH = 0.8;
 const TOOL_HEARTBEAT_INTERVAL_MS = 3000;
 const heartbeatSamples = Array.from({ length: HEARTBEAT_SAMPLE_COUNT }, () => 0);
-let heartbeatPulseQueue = [];
+const heartbeatPulseQueue = [];
 let heartbeatBeatTimer = null;
 let toolHeartbeatTimer = null;
 const activeToolExecutions = new Map();

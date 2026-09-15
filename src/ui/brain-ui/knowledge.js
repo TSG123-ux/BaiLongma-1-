@@ -2,7 +2,7 @@ import { apiUrl } from './api-client.js'
 import { t } from './i18n/index.js'
 
 let active = false
-let state = { regionId: '', query: '', documentId: '' }
+const state = { regionId: '', query: '', documentId: '' }
 const $ = (id) => document.getElementById(id)
 
 function request(path) {
