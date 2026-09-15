@@ -3892,6 +3892,31 @@ initSettings({
   setTtsVoiceId: (voiceId) => { activeTTSVoiceId = voiceId; },
   setOpenSettings: (openSettings) => { openSettingsRef = openSettings; },
 });
+
+// ── Manual self-check button ──
+(function initSelfCheckButton() {
+  const btn = document.getElementById('selfcheck-btn');
+  if (!btn) return;
+  let running = false;
+  btn.addEventListener('click', async () => {
+    if (running) return;
+    running = true;
+    btn.classList.add('active');
+    btn.title = '自检中...';
+    try {
+      const res = await fetch('/admin/self-check', { method: 'POST' });
+      if (!res.ok) throw new Error('self-check request failed');
+    } catch (err) {
+      console.error('[selfcheck] trigger failed:', err);
+    } finally {
+      setTimeout(() => {
+        running = false;
+        btn.classList.remove('active');
+        btn.title = '手动自检';
+      }, 2000);
+    }
+  });
+})();
 // ── Voice panel ──
 initVoicePanel({
   btnId:      "voice-btn",

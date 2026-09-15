@@ -380,6 +380,8 @@ export function startAPI(port = 3721, {
     clearPreparedActivation,
     onActivated: onActivatedCallback,
     onActivationIntroComplete: onActivationIntroCompleteCallback,
+    ensureStartupSelfCheckState: consciousnessLoop.ensureStartupSelfCheckState || (() => {}),
+    triggerImmediateTick: consciousnessLoop.triggerImmediateTick || (() => {}),
   }
 
   const requestHandler = async (req, res) => {

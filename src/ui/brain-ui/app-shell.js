@@ -24,6 +24,7 @@ const createPrimaryPanel = () => `
     <button class="voice-btn" id="voice-btn" title="麦克风 开/关" type="button">🎤</button>
     <button class="video-btn" id="video-btn" title="视频模式 (V)" type="button" hidden>⊞</button>
     <button class="music-btn" id="music-btn" title="音乐模式 (M)" type="button" hidden>♪</button>
+    <button class="selfcheck-btn" id="selfcheck-btn" title="手动自检" type="button">🔍</button>
     <button class="settings-btn" id="settings-btn" title="设置" type="button">⚙</button>
   </header>
 
