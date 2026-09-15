@@ -333,6 +333,8 @@ export function startAPI(port = 3721, {
   getStateSnapshot = null,
   onActivated = null,
   onActivationIntroComplete = null,
+  ensureStartupSelfCheckState = null,
+  triggerImmediateTick = null,
 } = {}) {
   const onActivatedCallback = onActivated
   const onActivationIntroCompleteCallback = onActivationIntroComplete
@@ -380,8 +382,8 @@ export function startAPI(port = 3721, {
     clearPreparedActivation,
     onActivated: onActivatedCallback,
     onActivationIntroComplete: onActivationIntroCompleteCallback,
-    ensureStartupSelfCheckState: consciousnessLoop.ensureStartupSelfCheckState || (() => {}),
-    triggerImmediateTick: consciousnessLoop.triggerImmediateTick || (() => {}),
+    ensureStartupSelfCheckState: ensureStartupSelfCheckState || (() => {}),
+    triggerImmediateTick: triggerImmediateTick || (() => {}),
   }
 
   const requestHandler = async (req, res) => {
