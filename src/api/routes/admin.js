@@ -122,15 +122,19 @@ export async function handleAdminRoutes(req, res, url, context = {}) {
     try {
       const ensureFn = admin.ensureStartupSelfCheckState
       const triggerFn = admin.triggerImmediateTick
+      console.log('[admin] self-check request received', { hasEnsure: !!ensureFn, hasTrigger: !!triggerFn })
       if (!ensureFn || !triggerFn) {
         jsonResponse(res, 503, { ok: false, error: 'Self-check not available' })
         return true
       }
-      ensureFn()
+      const checkState = ensureFn()
+      console.log('[admin] self-check state set', { active: checkState?.active })
       admin.emitEvent('admin', { action: 'self-check-triggered' })
       triggerFn()
+      console.log('[admin] triggerImmediateTick called')
       jsonResponse(res, 200, { ok: true, message: 'Self-check started' })
     } catch (err) {
+      console.error('[admin] self-check error:', err)
       jsonResponse(res, 500, { ok: false, error: err.message })
     }
     return true
