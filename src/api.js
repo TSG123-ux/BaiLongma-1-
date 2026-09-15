@@ -37,6 +37,7 @@ import {
   timingSafeTokenEqual,
 } from './api/websocket-security.js'
 
+/** 重新导出事件发射器，供外部模块监听运行时事件 */
 export { emitEvent }
 
 const DEFAULT_API_HOST = '127.0.0.1'
@@ -317,6 +318,17 @@ function attachWebSocketUpgrades(server, port, { sceneWss, cloudWss }) {
   })
 }
 
+/**
+ * 启动 HTTP/HTTPS API 服务器，提供 REST 接口和 WebSocket 服务。
+ * 包含消息投递、SSE 事件流、场景 UI 通道、语音 ASR 等能力。
+ *
+ * @param {number} [port=3721] - 监听端口
+ * @param {Object} [options] - 启动选项
+ * @param {Function|null} [options.getStateSnapshot=null] - 获取运行时状态快照的回调
+ * @param {Function|null} [options.onActivated=null] - 激活完成回调
+ * @param {Function|null} [options.onActivationIntroComplete=null] - 激活引导完成回调
+ * @returns {import('http').Server} HTTP/HTTPS server 实例
+ */
 export function startAPI(port = 3721, {
   getStateSnapshot = null,
   onActivated = null,

@@ -385,6 +385,16 @@ function deliverFallbackReply(msg, content, timestamp) {
   }
 }
 
+/**
+ * 构建工具执行上下文，包含当前目标 ID、允许的可见 ID 列表。
+ * 供 LLM 工具调用层（如 send_message）确定可投递的目标范围。
+ *
+ * @param {Object} [opts] - 构建选项
+ * @param {string|null} [opts.currentTargetId=null] - 当前对话目标 ID
+ * @param {Array} [opts.conversationWindow=[]] - 当前对话窗口消息列表
+ * @param {boolean} [opts.includeRecentPartners=false] - 是否包含近期对话伙伴（TICK 场景）
+ * @returns {{ currentTargetId: string|null, allowedTargetIds: string[], visibleTargetIds: string[] }}
+ */
 export function buildToolContext({ currentTargetId = null, conversationWindow = [], includeRecentPartners = false } = {}) {
   const visibleTargetIds = [
     currentTargetId,
