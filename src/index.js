@@ -1848,7 +1848,11 @@ async function main() {
   }
 
   console.log('Type a message and press Enter to send it to Jarvis\n')
-  await startConsciousnessLoop()
+  // Always defer consciousness loop until intro animation completes
+  deferConsciousnessUntilActivationIntro()
+  // Also start immediately as fallback in case intro doesn't trigger completion
+  startConsciousnessLoop({ runImmediateTick: true })
+    .catch(err => console.error('[system] Main loop failed to start:', err))
 }
 
 main()
