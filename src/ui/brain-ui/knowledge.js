@@ -207,6 +207,10 @@ export function setKnowledgeCortexMode(visible, { source = 'brain-ui', regionId,
   report(source)
 }
 
+export function toggleKnowledgeCortex(source = 'brain-ui') {
+  setKnowledgeCortexMode(!active, { source })
+}
+
 export function initKnowledgePanel() {
   $('kc-close')?.addEventListener('click', () => setKnowledgeCortexMode(false))
   $('kc-search-form')?.addEventListener('submit', (event) => { event.preventDefault(); search() })

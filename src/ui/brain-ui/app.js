@@ -8,9 +8,9 @@ import { initVoicePanel } from "./voice-panel.js";
 import { initHotspot, toggleHotspot, setHotspotMode } from "./hotspot.js";
 import { initWorldcup, toggleWorldcup, setWorldcupMode } from "./worldcup.js";
 import { initTyphoon, toggleTyphoon, setTyphoonMode } from "./typhoon.js";
-import { cancelPersonCardAssistantEnrichment, enrichVisiblePersonCardFromText, initPersonCard, setPersonCardMode } from "./person-card.js";
-import { initDocPanel, setDocPanelMode } from "./doc.js";
-import { initKnowledgePanel, setKnowledgeCortexMode } from "./knowledge.js";
+import { cancelPersonCardAssistantEnrichment, enrichVisiblePersonCardFromText, initPersonCard, setPersonCardMode, togglePersonCard } from "./person-card.js";
+import { initDocPanel, setDocPanelMode, toggleDocPanel } from "./doc.js";
+import { initKnowledgePanel, setKnowledgeCortexMode, toggleKnowledgeCortex } from "./knowledge.js";
 import { initWechatPopup, showWechatPopup } from "./wechat-popup.js";
 import { initFeishuPopup, showFeishuPopup } from "./feishu-popup.js";
 import { attachJarvisAudioGraph, attachJarvisFx, isFxEnabledForVoice, setFxEnabledForVoice, getJarvisFxParams, setJarvisFxParams, resetJarvisFxParams, isFxUnlocked, tryUnlockFx, resumeJarvisAudioContext } from "./tts-fx.js";
@@ -3954,21 +3954,9 @@ initAIVideoMode();
     w: () => toggleWorldcup(),
     t: () => toggleTyphoon(),
     h: () => toggleHotspot(),
-    d: () => {
-      const docPanel = document.getElementById('doc-panel');
-      const isActive = docPanel && !docPanel.hidden;
-      setDocPanelMode(!isActive, { topicId: 'self_architecture', source: 'keyboard_shortcut' });
-    },
-    p: () => {
-      const personCard = document.getElementById('person-card');
-      const isActive = personCard && !personCard.hidden;
-      setPersonCardMode(!isActive, { source: 'keyboard_shortcut' });
-    },
-    k: () => {
-      const kcPanel = document.getElementById('kc-panel');
-      const isActive = kcPanel && !kcPanel.hidden;
-      setKnowledgeCortexMode(!isActive, { source: 'keyboard_shortcut' });
-    },
+    d: () => toggleDocPanel(),
+    p: () => togglePersonCard(),
+    k: () => toggleKnowledgeCortex(),
     s: () => {
       fetch('/admin/self-check', { method: 'POST' })
         .then(res => res.json())
