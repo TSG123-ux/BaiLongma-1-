@@ -3957,12 +3957,6 @@ initAIVideoMode();
     d: () => toggleDocPanel(),
     p: () => togglePersonCard(),
     k: () => toggleKnowledgeCortex(),
-    s: () => {
-      fetch('/admin/self-check', { method: 'POST' })
-        .then(res => res.json())
-        .then(data => console.log('[selfcheck] triggered:', data))
-        .catch(err => console.error('[selfcheck] trigger failed:', err));
-    },
   };
 
   window.addEventListener('keydown', (event) => {

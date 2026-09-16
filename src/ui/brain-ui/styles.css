@@ -1247,11 +1247,21 @@ body {
 
 .panel-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   margin-top: 14px;
   padding-top: 14px;
   border-top: 1px solid var(--line);
+}
+
+.panel-actions .reset-view {
+  flex-shrink: 0;
+}
+
+.panel-actions .physics-control {
+  flex: 1;
+  min-width: 120px;
 }
 
 .stream::-webkit-scrollbar,
@@ -2200,34 +2210,6 @@ body {
   color: var(--ink);
   border-color: color-mix(in srgb, var(--warm) 32%, var(--line-strong));
   background: color-mix(in srgb, var(--warm) 8%, var(--panel-raised));
-}
-
-/* ── Self-check square button (panel-actions) ── */
-.selfcheck-square-btn {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--panel-raised) 60%, transparent);
-  color: var(--dim);
-  font-size: 13px;
-  cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
-}
-.selfcheck-square-btn:hover {
-  color: var(--ink);
-  border-color: color-mix(in srgb, var(--cool) 32%, var(--line-strong));
-  background: color-mix(in srgb, var(--cool) 8%, var(--panel-raised));
-}
-.selfcheck-square-btn.active {
-  color: var(--cool);
-  border-color: color-mix(in srgb, var(--cool) 58%, transparent);
-  background: color-mix(in srgb, var(--cool) 12%, transparent);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--cool) 22%, transparent);
 }
 
 #tip {

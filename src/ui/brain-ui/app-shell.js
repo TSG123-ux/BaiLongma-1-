@@ -52,7 +52,6 @@ const createPrimaryPanel = () => `
   </div>
 
   <div class="panel-actions">
-    <button class="selfcheck-square-btn" id="selfcheck-btn" title="手动自检" type="button">🔍</button>
     <button class="reset-view" id="reset-view-btn" type="button">重置节点图</button>
 
     <section class="physics-control" id="physics-control">
