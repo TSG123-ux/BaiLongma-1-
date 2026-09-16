@@ -3947,3 +3947,44 @@ initWorldcup().catch((err) => console.warn('[Worldcup] init failed:', err));
 initTyphoon();
 initMediaModes();
 initAIVideoMode();
+
+// ── Keyboard shortcuts for fullscreen mode panels ──
+(function initFullscreenShortcuts() {
+  const shortcuts = {
+    w: () => toggleWorldcup(),
+    t: () => toggleTyphoon(),
+    h: () => toggleHotspot(),
+    d: () => {
+      const docPanel = document.getElementById('doc-panel');
+      const isActive = docPanel && !docPanel.hidden;
+      setDocPanelMode(!isActive, { topicId: 'self_architecture', source: 'keyboard_shortcut' });
+    },
+    p: () => {
+      const personCard = document.getElementById('person-card');
+      const isActive = personCard && !personCard.hidden;
+      setPersonCardMode(!isActive, { source: 'keyboard_shortcut' });
+    },
+    k: () => {
+      const kcPanel = document.getElementById('kc-panel');
+      const isActive = kcPanel && !kcPanel.hidden;
+      setKnowledgeCortexMode(!isActive, { source: 'keyboard_shortcut' });
+    },
+    s: () => {
+      fetch('/admin/self-check', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => console.log('[selfcheck] triggered:', data))
+        .catch(err => console.error('[selfcheck] trigger failed:', err));
+    },
+  };
+
+  window.addEventListener('keydown', (event) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    const target = event.target;
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return;
+    const key = event.key.toLowerCase();
+    if (shortcuts[key]) {
+      event.preventDefault();
+      shortcuts[key]();
+    }
+  });
+})();
