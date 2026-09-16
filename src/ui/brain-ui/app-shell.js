@@ -24,7 +24,6 @@ const createPrimaryPanel = () => `
     <button class="voice-btn" id="voice-btn" title="麦克风 开/关" type="button">🎤</button>
     <button class="video-btn" id="video-btn" title="视频模式 (V)" type="button" hidden>⊞</button>
     <button class="music-btn" id="music-btn" title="音乐模式 (M)" type="button" hidden>♪</button>
-    <button class="selfcheck-btn" id="selfcheck-btn" title="手动自检" type="button">🔍</button>
     <button class="settings-btn" id="settings-btn" title="设置" type="button">⚙</button>
   </header>
 
@@ -53,6 +52,7 @@ const createPrimaryPanel = () => `
   </div>
 
   <div class="panel-actions">
+    <button class="selfcheck-square-btn" id="selfcheck-btn" title="手动自检" type="button">🔍</button>
     <button class="reset-view" id="reset-view-btn" type="button">重置节点图</button>
 
     <section class="physics-control" id="physics-control">
@@ -228,6 +228,8 @@ const createConsole = () => `
   <div id="paste-attachments" class="paste-attachments" hidden></div>
   <div id="input-row">
     <div id="slash-menu" class="slash-menu" role="listbox" aria-label="命令" hidden></div>
+    <button id="upload-btn" class="upload-btn" title="上传文件" type="button">+</button>
+    <input type="file" id="file-input" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.json,.md" hidden>
     <span class="prompt-mark">▸</span>
     <textarea id="msg-input" rows="1" placeholder="向 Longma 发送消息…（输入 / 调出命令，Shift+Enter 换行）" autocomplete="off"></textarea>
     <button id="send-btn" type="button">发送</button>

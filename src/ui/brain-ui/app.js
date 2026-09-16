@@ -3976,3 +3976,30 @@ initAIVideoMode();
     }
   });
 })();
+
+// ── File upload button ──
+(function initUploadButton() {
+  const uploadBtn = document.getElementById('upload-btn');
+  const fileInput = document.getElementById('file-input');
+  if (!uploadBtn || !fileInput) return;
+
+  uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', (event) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileList = Array.from(files).map(f => `📄 ${f.name} (${(f.size / 1024).toFixed(1)}KB)`).join('\n');
+    const msgInput = document.getElementById('msg-input');
+    if (msgInput) {
+      const prefix = msgInput.value ? '\n' : '';
+      msgInput.value += `${prefix}[已上传 ${files.length} 个文件]\n${fileList}`;
+      msgInput.dispatchEvent(new Event('input'));
+    }
+
+    console.log('[upload] files selected:', Array.from(files).map(f => f.name));
+    fileInput.value = '';
+  });
+})();
