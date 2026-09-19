@@ -521,8 +521,9 @@ const createSettingsModal = () => `
             <div class="settings-row">
               <label class="settings-label" for="voice-provider-select">服务商</label>
               <select class="settings-select" id="voice-provider-select">
+                <option value="whisper" selected>本地 Whisper（推荐，无需 API）</option>
                 <option value="local">本机识别（macOS）</option>
-                <option value="aliyun">阿里云百炼（推荐）</option>
+                <option value="aliyun">阿里云百炼</option>
                 <option value="volcengine">火山引擎豆包 ASR</option>
                 <option value="tencent">腾讯云 ASR</option>
                 <option value="xunfei">科大讯飞 RTASR</option>

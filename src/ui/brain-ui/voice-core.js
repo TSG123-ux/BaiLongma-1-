@@ -688,7 +688,7 @@ export function createVoiceCore({ canvas, transcript, getChatInput, getSendMessa
 
     ws.onopen = () => {
       if (cloudWs !== ws) return;
-      const provider = localStorage.getItem(VOICE_PROVIDER_KEY) || 'aliyun';
+      const provider = localStorage.getItem(VOICE_PROVIDER_KEY) || 'whisper';
       const lang = getLang?.()?.split('-')[0] || 'zh';
       ws.send(JSON.stringify({ type: 'config', provider, lang }));
       setStatus('listening');
@@ -929,7 +929,7 @@ export function createVoiceCore({ canvas, transcript, getChatInput, getSendMessa
       cloudWs = bargeinWs;
       bargeinWs.onopen = () => {
         if (cloudWs !== bargeinWs) return;
-        const provider = localStorage.getItem(VOICE_PROVIDER_KEY) || 'aliyun';
+        const provider = localStorage.getItem(VOICE_PROVIDER_KEY) || 'whisper';
         const lang = getLang?.()?.split('-')[0] || 'zh';
         bargeinWs.send(JSON.stringify({ type: 'config', provider, lang }));
         lastInboundTs = Date.now(); // 看门狗：打断重连后给新鲜起点

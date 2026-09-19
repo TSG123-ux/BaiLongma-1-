@@ -819,7 +819,7 @@ const VOICE_KEY_PROVIDER = new Map(
  * 支持别名映射（如 macos→local, cloud→aliyun）。
  *
  * @param {string} provider - 原始提供商标识
- * @param {string} [fallback='aliyun'] - 无法识别时的回退值
+ * @param {string} [fallback='whisper'] - 无法识别时的回退值
  * @returns {string} 归一化后的提供商标识
  */
 export function normalizeVoiceProvider(provider, fallback = 'whisper') {
@@ -873,7 +873,7 @@ function writeVoiceProviderConfig(provider, record) {
 }
 
 function writeActiveVoiceProvider(provider) {
-  const p = normalizeVoiceProvider(provider, 'aliyun')
+  const p = normalizeVoiceProvider(provider, 'whisper')
   writeJsonObjectFile(getVoiceActiveFile(), {
     provider: p,
     updatedAt: new Date().toISOString(),
@@ -885,7 +885,7 @@ function readLegacyVoiceBlock(cfg = readExistingStoredConfig()) {
   return (cfg?.voice && typeof cfg.voice === 'object') ? cfg.voice : {}
 }
 
-function readActiveVoiceProvider(fallback = 'aliyun') {
+function readActiveVoiceProvider(fallback = 'whisper') {
   const active = readJsonObjectFile(getVoiceActiveFile())
   if (active?.provider) return normalizeVoiceProvider(active.provider, fallback)
   const legacy = readLegacyVoiceBlock()
@@ -899,7 +899,7 @@ function stripLegacyVoiceBlock(cfg) {
 
 function persistLegacyVoiceBlock(legacy) {
   if (!legacy || typeof legacy !== 'object') return
-  const activeProvider = writeActiveVoiceProvider(legacy.voiceProvider || legacy.provider || 'aliyun')
+  const activeProvider = writeActiveVoiceProvider(legacy.voiceProvider || legacy.provider || 'whisper')
   const buckets = new Map()
   for (const [key, value] of Object.entries(legacy)) {
     if (key === 'voiceProvider' || key === 'provider') continue
@@ -2007,7 +2007,7 @@ const CHAT_PROVIDERS_WITH_AMBIGUOUS_SK_KEYS = new Set([
  * @returns {{ voiceProvider: string, [key: string]: { configured: boolean } }} 语音配置状态
  */
 export function getVoiceConfig() {
-  const result = { voiceProvider: readActiveVoiceProvider('aliyun') }
+  const result = { voiceProvider: readActiveVoiceProvider('whisper') }
   for (const key of VOICE_CONFIG_KEYS) {
     if (key === 'voiceProvider') continue
     const provider = VOICE_KEY_PROVIDER.get(key) || result.voiceProvider
@@ -2035,7 +2035,7 @@ export function getVoiceConfig() {
  * @returns {Object} 完整语音配置
  */
 export function getVoiceRuntimeConfig(providerHint = null) {
-  const provider = readActiveVoiceProvider(providerHint || 'aliyun')
+  const provider = readActiveVoiceProvider(providerHint || 'whisper')
   const stored = readVoiceProviderConfig(provider)
   return {
     ...stored,
@@ -2052,7 +2052,7 @@ export function getVoiceRuntimeConfig(providerHint = null) {
 export function setVoiceConfig(updates) {
   const existing = readExistingStoredConfig()
   const { voice: legacyVoice, ...baseConfig } = existing
-  let activeProvider = readActiveVoiceProvider(legacyVoice?.voiceProvider || legacyVoice?.provider || 'aliyun')
+  let activeProvider = readActiveVoiceProvider(legacyVoice?.voiceProvider || legacyVoice?.provider || 'whisper')
   const requestedProvider = updates?.voiceProvider ?? updates?.provider
   if (requestedProvider !== undefined) {
     activeProvider = normalizeVoiceProvider(requestedProvider, activeProvider)
