@@ -69,6 +69,7 @@ import { startTyphoonAlertMonitor } from './typhoon-alert-monitor.js'
 import { scheduleSceneSurfaceRemoval } from './scene/transient-surfaces.js'
 import { createAwakeningManager } from './awakening.js'
 import { createTaskManager } from './task-manager.js'
+import { startVoiceServer, getVoiceStatus as getVoiceServerStatus } from './voice/manager.js'
 
 function reportStartupProgress(id, status, detail, message) {
   try {
@@ -1838,8 +1839,7 @@ async function main() {
 
   // 启动本地 Whisper 语音识别服务（无需 API Key，离线运行）
   try {
-    const { startVoiceServer, getVoiceStatus } = await import('./voice/manager.js')
-    const voiceStatus = getVoiceStatus()
+    const voiceStatus = getVoiceServerStatus()
     if (voiceStatus.status === 'stopped') {
       startVoiceServer({ model: 'small' })
       console.log('[voice] 本地 Whisper 语音识别服务已启动')

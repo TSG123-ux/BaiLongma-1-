@@ -472,9 +472,6 @@ function createVolcengineSession(config, onTranscript, onError, onClose, onEvent
 
 // ─── 本地 Whisper ASR ───
 function createLocalWhisperSession(lang, onTranscript, onError, onClose) {
-  const WebSocket = getWebSocket()
-  if (!WebSocket) { onError('WebSocket 不可用'); return null }
-
   const port = 3723
   let ws = null
   let closed = false
