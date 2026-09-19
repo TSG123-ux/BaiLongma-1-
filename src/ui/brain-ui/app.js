@@ -3977,23 +3977,58 @@ initAIVideoMode();
   const fileInput = document.getElementById('file-input');
   if (!uploadBtn || !fileInput) return;
 
+  function fileToBase64DataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   uploadBtn.addEventListener('click', () => {
     fileInput.click();
   });
 
-  fileInput.addEventListener('change', (event) => {
+  fileInput.addEventListener('change', async (event) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
-    const fileList = Array.from(files).map(f => `📄 ${f.name} (${(f.size / 1024).toFixed(1)}KB)`).join('\n');
-    const msgInput = document.getElementById('msg-input');
-    if (msgInput) {
-      const prefix = msgInput.value ? '\n' : '';
-      msgInput.value += `${prefix}[已上传 ${files.length} 个文件]\n${fileList}`;
-      msgInput.dispatchEvent(new Event('input'));
-    }
+    uploadBtn.classList.add('active');
+    uploadBtn.title = '上传中...';
 
-    console.log('[upload] files selected:', Array.from(files).map(f => f.name));
-    fileInput.value = '';
+    try {
+      const resources = [];
+      for (const file of Array.from(files)) {
+        const dataUrl = await fileToBase64DataUrl(file);
+        resources.push({ name: file.name, filename: file.name, data_url: dataUrl });
+      }
+
+      const res = await fetch('/message/resources', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ resources }),
+      });
+
+      const data = await res.json();
+      if (data.ok) {
+        const msgInput = document.getElementById('msg-input');
+        if (msgInput) {
+          const names = files.length === 1 ? files[0].name : `${files.length} 个文件`;
+          const prefix = msgInput.value ? '\n' : '';
+          msgInput.value += `${prefix}[已上传: ${names}]`;
+          msgInput.dispatchEvent(new Event('input'));
+        }
+        console.log('[upload] success:', data.resources?.length, 'files');
+      } else {
+        console.error('[upload] failed:', data.error);
+      }
+    } catch (err) {
+      console.error('[upload] error:', err);
+    } finally {
+      uploadBtn.classList.remove('active');
+      uploadBtn.title = '上传文件';
+      fileInput.value = '';
+    }
   });
 })();

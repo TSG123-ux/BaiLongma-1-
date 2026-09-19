@@ -2211,6 +2211,16 @@ body {
   border-color: color-mix(in srgb, var(--warm) 32%, var(--line-strong));
   background: color-mix(in srgb, var(--warm) 8%, var(--panel-raised));
 }
+.upload-btn.active {
+  color: var(--warm);
+  border-color: color-mix(in srgb, var(--warm) 58%, transparent);
+  background: color-mix(in srgb, var(--warm) 12%, transparent);
+  animation: pulse-warm 1.2s ease-in-out infinite;
+}
+@keyframes pulse-warm {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--warm) 30%, transparent); }
+  50% { box-shadow: 0 0 12px 2px color-mix(in srgb, var(--warm) 30%, transparent); }
+}
 
 #tip {
   position: fixed;
