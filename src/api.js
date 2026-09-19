@@ -194,7 +194,7 @@ function attachCloudASR() {
           const msg = JSON.parse(raw.toString())
           if (msg.type !== 'config') return
           configured = true
-          const rawCfg = getVoiceRuntimeConfig(msg.provider || 'aliyun')
+          const rawCfg = getVoiceRuntimeConfig(msg.provider || 'whisper')
           const provider = rawCfg.provider
           const lang = msg.lang || rawCfg.lang || 'zh'
           const nextSession = await createCloudASRSession(
