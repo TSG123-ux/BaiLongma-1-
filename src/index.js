@@ -1835,6 +1835,19 @@ async function main() {
   })
   // 仅在配置了正式预警 API 与目标地区时启用；避免把普通路径数据当作安全预警。
   startTyphoonAlertMonitor()
+
+  // 启动本地 Whisper 语音识别服务（无需 API Key，离线运行）
+  try {
+    const { startVoiceServer, getVoiceStatus } = await import('./voice/manager.js')
+    const voiceStatus = getVoiceStatus()
+    if (voiceStatus.status === 'stopped') {
+      startVoiceServer({ model: 'small' })
+      console.log('[voice] 本地 Whisper 语音识别服务已启动')
+    }
+  } catch (err) {
+    console.warn('[voice] 本地 Whisper 服务启动失败（语音输入将不可用）:', err.message)
+  }
+
   reportStartupProgress('api', 'running', `等待 ${apiProtocol}://127.0.0.1:${apiPort} 就绪`, '正在等待本地 API 就绪')
   startSocialConnectors({ pushMessage, emitEvent }).catch(err => console.warn('[social] startup failed:', err.message))
 

@@ -794,9 +794,12 @@ const VOICE_PROVIDER_ALIASES = {
   doubao: 'volcengine',
   bytedance: 'volcengine',
   iflytek: 'xunfei',
+  'local-whisper': 'whisper',
+  whisperlocal: 'whisper',
 }
-const VOICE_PROVIDERS = new Set(['local', 'aliyun', 'volcengine', 'tencent', 'xunfei'])
+const VOICE_PROVIDERS = new Set(['whisper', 'local', 'aliyun', 'volcengine', 'tencent', 'xunfei'])
 const VOICE_PROVIDER_KEYS = {
+  whisper: [],
   local: ['lang', 'macosRecognitionMode'],
   aliyun: ['aliyunApiKey', 'aliyunAsrModel'],
   tencent: ['tencentSecretId', 'tencentSecretKey', 'tencentAppId'],
@@ -819,7 +822,7 @@ const VOICE_KEY_PROVIDER = new Map(
  * @param {string} [fallback='aliyun'] - 无法识别时的回退值
  * @returns {string} 归一化后的提供商标识
  */
-export function normalizeVoiceProvider(provider, fallback = 'aliyun') {
+export function normalizeVoiceProvider(provider, fallback = 'whisper') {
   const raw = String(provider || '').trim().toLowerCase()
   const normalized = VOICE_PROVIDER_ALIASES[raw] || raw
   return VOICE_PROVIDERS.has(normalized) ? normalized : fallback
